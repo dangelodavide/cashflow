@@ -4,91 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Cashflow</title>
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-        crossorigin="anonymous"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"
-    />
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Lato:wght@400;700&display=swap"
-        rel="stylesheet"
-    />
-    <!-- CSS -->
-    <link rel="stylesheet" href="../style.css" />
+    <!-- css -->
+    <link rel="stylesheet" href="./styles/about.css" />
 </head>
 <body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../index.html">Cashflow</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarOptions"
-                aria-controls="navbarOptions"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarOptions">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./about.html">About Us</a>
-                    </li>
-                </ul>
-            </div>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="../index.html">Cashflow</a>
+        <div>
+            <a href="../index.html">Home</a>
+            <a href="./about.html">About Us</a>
         </div>
-    </nav>
+    </div>
 
     <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="title">CHI SIAMO</div>
+    <div class="container">
+        <!-- About Section -->
+        <div class="title">ABOUT</div>
         <p class="cashflow-content">
-            "Cashflow" nasce dalla passione di due professionisti che credono nell'importanza
-            dell'educazione finanziaria. Siamo dedicati ad aiutare persone come te a raggiungere
-            la libertà finanziaria attraverso strumenti pratici e ben strutturati.
+            CashFlow è un progetto nato dalla passione di due professionisti dedicati
+            a fornire uno strumento innovativo per la gestione delle finanze personali. La nostra
+            missione è aiutare persone di tutto il mondo a raggiungere la libertà finanziaria,
+            ispirandoci ai principi di Robert T. Kiyosaki.
+            L'applicazione permette di tenere traccia del reddito, delle spese e del patrimonio netto,
+            visualizzando chiaramente i dati e offrendo strumenti per una gestione efficace degli
+            investimenti.
         </p>
 
-        <div class="team-section">
-            <div class="team-title">IL NOSTRO TEAM</div>
-            <div class="row mt-4">
-                <!-- Team Member 1 -->
-                <div class="col-md-6 text-center">
-                    <img src="../assets/logo.png" alt="Davide D'Angelo" class="rounded-circle team-photo mb-3" />
-                    <h4>Davide D'Angelo</h4>
-                    <p>Co-Fondatore & Sviluppatore</p>
+        <!-- Bio del Progetto -->
+        <div class="section">
+            <h2>La Visione Dietro il Progetto</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Obiettivo Principale</h4>
+                    <p>
+                        L'obiettivo di CashFlow è quello di rendere accessibile l'educazione finanziaria a
+                        tutti. Con un'interfaccia semplice e intuitiva, chiunque può gestire il proprio
+                        budget personale, monitorare le spese e costruire una pianificazione finanziaria
+                        efficace.
+                    </p>
                 </div>
-                <!-- Team Member 2 -->
-                <div class="col-md-6 text-center">
-                    <img src="../assets/logo.png" alt="Michele Di Corato" class="rounded-circle team-photo mb-3" />
-                    <h4>Michele Di Corato</h4>
-                    <p>Co-Fondatore & Esperto Finanziario</p>
+                <div class="col-md-6">
+                    <h4>Tecnologie Utilizzate</h4>
+                    <ul>
+                        <li>HTML5 e CSS3 per una base solida e compatibile con tutti i browser.</li>
+                        <li>IndexedDB per il salvataggio sicuro dei dati.</li>
+                        <li>JavaScript per la gestione dinamica dei dati.</li>
+                    </ul>
                 </div>
             </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="section">
+            <h2>IL NOSTRO TEAM</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="team-member">
+                        <img src="../assets/ddn.png" alt="Davide D'Angelo" class="team-photo">
+                        <h4>Davide D'Angelo</h4>
+                        <p>Co-Fondatore & Sviluppatore</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="team-member">
+                        <img src="../assets/mdc.png" alt="Michele Di Corato" class="team-photo">
+                        <h4>Michele Di Corato</h4>
+                        <p>Co-Fondatore & Esperto Finanziario</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sicurezza Section -->
+        <div class="section">
+            <h2>Sicurezza dei Dati</h2>
+            <ul>
+                <li>Controllo completo sui dati personali: nulla viene condiviso con server remoti.</li>
+                <li>Esportazione e importazione dei dati in formato JSON per backup sicuri.</li>
+                <li>Validazione degli input per prevenire errori e garantire l'integrità dei dati.</li>
+            </ul>
         </div>
     </div>
 
     <!-- Footer -->
-    <div class="footer mt-5">
+    <div class="footer">
         <p>© 2024-2025. Tutti i diritti riservati.</p>
-        <p>Questo progetto è stato realizzato secondo i principi di Robert T. Kiyosaki.</p>
+        <p>
+            Questo progetto è stato realizzato secondo i principi di <a href="#">Robert T. Kiyosaki</a>.
+        </p>
         <p>Sviluppato da <strong>Davide D'Angelo</strong> e <strong>Michele Di Corato</strong>.</p>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

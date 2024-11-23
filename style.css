@@ -11,8 +11,24 @@
 
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
+  width: 100%;
   color: var(--color-black);
+}
+
+.navbar {
+  background-color: var(--color-light-gray);
+  width: 100%;
+  font-size: 1rem;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  img {
+    height: 24px;
+    margin-right: 5px;
+  }
 }
 
 .container {

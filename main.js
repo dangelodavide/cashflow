@@ -623,3 +623,23 @@ function calculateInvestmentTotals() {
   // Aggiorna anche i ricavi annuali
   calculateAnnualReturns();
 }
+
+function toggleTheme() {
+  const htmlElement = document.documentElement; // Riferimento all'elemento <html>
+  const currentTheme = htmlElement.getAttribute('data-bs-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+  htmlElement.setAttribute('data-bs-theme', newTheme);
+
+  // Mostra un messaggio o aggiorna lo stato visivo, se necessario
+  console.log(`Tema cambiato in: ${newTheme}`);
+}
+
+function toggleWallet(walletId) {
+  const walletCard = document.getElementById(walletId);
+  if (walletCard.style.display === "none") {
+      walletCard.style.display = "block";
+  } else {
+      walletCard.style.display = "none";
+  }
+}

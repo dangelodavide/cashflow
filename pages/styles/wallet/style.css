@@ -1,0 +1,206 @@
+/* Wallet Section */
+/* Definizione delle variabili di colore */
+:root {
+    --color-primary: #2c3e50; /* Blu scuro */
+    --color-secondary: #18bc9c; /* Verde */
+    --color-accent: #18bc9c;
+    --color-light: #ecf0f1; /* Grigio chiaro */
+    --color-dark: #34495e; /* Grigio scuro */
+    --color-lighter-gray: #eaeaea; 
+    --color-hover-gray: rgb(83, 83, 83); /* Hover */
+    --spacing-small: 10px;
+    --spacing-medium: 20px;
+    --spacing-large: 40px;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --font-size-base: 1rem;
+    --font-size-medium: 1.2rem;
+    --font-size-large: 1.5rem;
+    --font-size-title: 2rem;
+    --font-primary: 'Open Sans', Arial, sans-serif;
+  }
+
+.body {
+    font-family: var(--font-primary);
+    background-color: var(--color-light);
+    color: var(--color-dark);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6; 
+}
+.wallet-section {
+    margin-top: var(--spacing-large);
+    padding: var(--spacing-medium);
+    background-color: var(--color-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+  }
+  
+  .wallet-section .subtitle {
+    font-size: var(--font-size-large);
+    text-align: center;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-medium);
+  }
+  
+  /* Dropdown per Wallet */
+  .wallet-section .dropdown {
+    text-align: center;
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .wallet-section .dropdown img {
+    margin-right: var(--spacing-small);
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .wallet-section .form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-small);
+  }
+  
+  .wallet-section .form-check img {
+    margin-right: var(--spacing-small);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  
+  /* Card Styling */
+  .wallet-section .wallet-cards {
+    margin-top: var(--spacing-medium);
+  }
+  
+  .wallet-section .card {
+    width: 18rem;
+    margin: var(--spacing-small) auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: var(--color-light);
+  }
+  
+  .wallet-section .card-img-top {
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+  }
+  
+  .wallet-section .card-body {
+    text-align: center;
+  }
+  
+  .wallet-section .card-title {
+    font-size: var(--font-size-medium);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-small);
+  }
+  
+  .wallet-section .card-text {
+    font-size: var(--font-size-base);
+    color: var(--color-dark);
+    margin-bottom: var(--spacing-medium);
+  }
+  
+  .wallet-section .form-control {
+    font-size: var(--font-size-base);
+    border: 1px solid var(--color-lighter-gray);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-small);
+    background-color: #ecf0f1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .wallet-image {
+    width: 20px;
+    height: auto;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+}
+
+.card {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.card .card-img-top {
+    margin-top: 10px;
+    padding: 5px;
+    width: 75px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 20px;
+}
+
+  
+  .navbar {
+    background-color: var(--color-primary);
+    border-bottom: 4px solid var(--color-secondary); /* Bordo superiore verde */
+    color: var(--color-light);
+    padding: var(--spacing-small) var(--spacing-medium);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: var(--font-size-medium);
+    font-weight: bold;
+    color: var(--color-light);
+    text-decoration: none;
+  }
+  
+  .navbar-brand img {
+    height: 30px;
+    margin-right: var(--spacing-small);
+  }
+  
+  .navbar a {
+    color: var(--color-light);
+    text-decoration: none;
+    margin: 0 var(--spacing-small);
+    font-weight: bold;
+    font-size: var(--font-size-base);
+  }
+  
+  .navbar a:hover {
+    color: var(--color-accent);
+  }
+
+  /* Footer */
+.footer {
+    background-color: var(--color-primary); /* Colore di sfondo blu scuro */
+    color: var(--color-light); /* Colore del testo bianco */
+    text-align: center; /* Testo centrato */
+    padding: var(--spacing-medium); /* Spaziatura interna */
+    border-top: 4px solid var(--color-secondary); /* Bordo superiore verde */
+    position: relative; /* Permette il posizionamento sotto il contenuto */
+    width: 100%; /* Larghezza completa */
+    font-size: var(--font-size-base); /* Dimensione del testo */
+    margin-top: var(--spacing-large); /* Spazio superiore */
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra sopra */
+  }
+  
+  .footer p {
+    margin: var(--spacing-small) 0; /* Spaziatura tra paragrafi */
+    line-height: 1.5; /* Migliora leggibilità */
+  }
+  
+  .footer a {
+    color: var(--color-secondary); /* Link verde */
+    text-decoration: none; /* Rimuove la sottolineatura */
+    font-weight: bold; /* Testo in grassetto */
+    transition: color 0.3s ease; /* Transizione morbida */
+  }
+  
+  .footer a:hover {
+    color: var(--color-accent); /* Colore rosso al passaggio del mouse */
+  }
+  

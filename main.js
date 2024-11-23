@@ -576,24 +576,11 @@ function loadData() {
   alert("Dati caricati con successo!");
 }
 
-window.onload = function() {
-  // Le tue funzioni esistenti
+window.onload = function () {
   calculateTotals();
   calculateRisparmi();
   calculateInvestmentTotals();
   calculateAnnualReturns();
-
-  // Nascondi il loading screen dopo 2 secondi
-  setTimeout(function() {
-      const loadingScreen = document.getElementById('loading-screen');
-      loadingScreen.style.opacity = '0';
-      loadingScreen.style.transition = 'opacity 0.5s ease';
-
-      // Rimuovi completamente il loading screen dopo la transizione
-      setTimeout(function() {
-          loadingScreen.style.display = 'none';
-      }, 500); 
-  }, 2000);
 };
 
 function addInvestment() {

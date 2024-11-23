@@ -167,34 +167,43 @@ function updateInvestmentTable(investments) {
 
 function calculateAnnualReturns() {
   const annualReturns = {};
-  const investmentRows = document.querySelectorAll("#investmentTable tr");
+  const investmentRows = document.querySelectorAll(".investment-table tbody tr");
 
-  investmentRows.forEach((row, index) => {
-    if (index > 0) {
-      // Ignora l'intestazione
-      const expectedReturn =
-        parseFloat(row.cells[2].querySelector("input").value) || 0;
-      const dateValue = row.cells[3].querySelector("input").value;
+  // Calcola i ricavi annuali
+  investmentRows.forEach((row) => {
+    const expectedReturn =
+      parseFloat(row.cells[2].querySelector("input").value) || 0;
+    const dateValue = row.cells[3].querySelector("input").value;
 
-      if (dateValue) {
-        const year = new Date(dateValue).getFullYear();
-        if (!annualReturns[year]) {
-          annualReturns[year] = 0;
-        }
-        annualReturns[year] += expectedReturn;
+    if (dateValue) {
+      const year = new Date(dateValue).getFullYear();
+      if (!annualReturns[year]) {
+        annualReturns[year] = 0;
       }
+      annualReturns[year] += expectedReturn;
     }
   });
 
-  // Visualizza i ricavi per anno
+  // Crea il contenitore dinamico per gli anni
   const annualReturnsDiv = document.getElementById("annualReturns");
-  let annualReturnsHtml = "";
+  annualReturnsDiv.innerHTML = ""; // Svuota i contenuti precedenti
+
+  // Genera una riga per ciascun anno con i ricavi
+  const table = document.createElement("table");
+  table.classList.add("totals-table");
   for (const year in annualReturns) {
-    annualReturnsHtml += `<p>Anno ${year}: €${annualReturns[year].toFixed(
-      2
-    )}</p>`;
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td class="totals">Anno ${year}: €${annualReturns[year].toLocaleString(
+      "it-IT",
+      { minimumFractionDigits: 2 }
+    )}</td>
+    `;
+    table.appendChild(row);
   }
-  annualReturnsDiv.innerHTML = annualReturnsHtml;
+
+  // Aggiungi la tabella al div dei ricavi annuali
+  annualReturnsDiv.appendChild(table);
 }
 
 function importData() {
@@ -522,25 +531,32 @@ function loadData() {
     row.cells[2].querySelector("input").value = item.valore;
   });
 
-  // Ripopola investimenti
-  const investmentTable = document.getElementById("investmentTable");
-  while (investmentTable.rows.length > 1) {
-    investmentTable.deleteRow(1);
-  }
-  data.investmentsData.forEach((item) => {
-    addInvestment();
-    const row = investmentTable.rows[investmentTable.rows.length - 1];
-    row.cells[0].querySelector("input").value = item.description;
-    row.cells[1].querySelector("input").value = item.cost;
-    row.cells[2].querySelector("input").value = item.expectedReturn;
-    row.cells[3].querySelector("input").value = item.expectedDate;
-  });
+// Ripopola investimenti
+const investmentTable = document.querySelector('.investment-table tbody');
+while (investmentTable.rows.length > 0) {
+  investmentTable.deleteRow(0); // Pulisce tutte le righe esistenti
+}
+data.investmentsData.forEach((item) => {
+  const newRow = document.createElement('tr');
+
+  // Crea le celle con i dati
+  newRow.innerHTML = `
+    <td><input type="text" placeholder="Descrizione" value="${item.description}"></td>
+    <td><input type="number" placeholder="0" value="${item.cost}"></td>
+    <td><input type="number" placeholder="0" value="${item.expectedReturn}"></td>
+    <td><input type="date" value="${item.expectedDate}"></td>
+    <td>
+      <button class="remove-btn" onclick="removeInvestment(this)">X</button>
+    </td>
+  `;
+
+  investmentTable.appendChild(newRow);
+});
 
   calculateTotals();
   calculateRisparmi();
   calculateInvestmentTotals();
   calculateAnnualReturns();
-
   alert("Dati caricati con successo!");
 }
 
@@ -551,85 +567,59 @@ window.onload = function () {
   calculateAnnualReturns();
 };
 
+function removeInvestment(button) {
+  const row = button.parentElement.parentElement; // Trova la riga del pulsante
+  row.remove(); // Rimuove la riga dalla tabella
+  calculateInvestmentTotals(); // Aggiorna i totali dopo la cancellazione
+}
+
 function addInvestment() {
-  const table = document.getElementById("investmentTable");
-  const row = document.createElement("tr");
+  // Seleziona la tabella degli investimenti
+  const investmentTable = document.querySelector('.investment-table tbody');
 
-  // Description cell
-  const cellDescription = document.createElement("td");
-  const descriptionInput = document.createElement("input");
-  descriptionInput.type = "text";
-  descriptionInput.placeholder = "Descrizione";
-  cellDescription.appendChild(descriptionInput);
+  // Crea una nuova riga
+  const newRow = document.createElement('tr');
 
-  // Investment Cost cell
-  const cellCost = document.createElement("td");
-  const costInput = document.createElement("input");
-  costInput.type = "number";
-  costInput.placeholder = "Costo";
-  costInput.oninput = calculateInvestmentTotals;
-  cellCost.appendChild(costInput);
+  // Aggiungi le celle per ogni colonna della tabella
+  newRow.innerHTML = `
+      <td><input type="text" placeholder="Descrizione"></td>
+      <td><input type="number" placeholder="0"></td>
+      <td><input type="number" placeholder="0"></td>
+      <td><input type="date"></td>
+      <td>
+        <button class="remove-btn" onclick="removeInvestment(this)">X</button>
+      </td>
+  `;
 
-  // Expected Return cell
-  const cellReturn = document.createElement("td");
-  const returnInput = document.createElement("input");
-  returnInput.type = "number";
-  returnInput.placeholder = "Ricavo Atteso";
-  returnInput.oninput = calculateInvestmentTotals;
-  cellReturn.appendChild(returnInput);
-
-  // Expected Return Date cell
-  const cellDate = document.createElement("td");
-  const dateInput = document.createElement("input");
-  dateInput.type = "date";
-  cellDate.appendChild(dateInput);
-
-  // Remove button
-  const removeBtn = document.createElement("button");
-  removeBtn.classList.add("remove-btn");
-  removeBtn.textContent = "X";
-  removeBtn.onclick = () => {
-    row.remove();
-    calculateInvestmentTotals();
-  };
-
-  cellDescription.appendChild(removeBtn);
-
-  row.appendChild(cellDescription);
-  row.appendChild(cellCost);
-  row.appendChild(cellReturn);
-  row.appendChild(cellDate);
-  table.appendChild(row);
-
-  calculateInvestmentTotals();
-  calculateTotals();
-  calculateAnnualReturns();
+  // Aggiungi la nuova riga alla tabella
+  investmentTable.appendChild(newRow);
 }
 
 function calculateInvestmentTotals() {
   let totaleInvestito = 0;
   let ricavoAttesoTotale = 0;
 
-  document.querySelectorAll("#investmentTable tr").forEach((row, index) => {
-    if (index > 0) {
-      const cost = parseFloat(row.cells[1].querySelector("input").value) || 0;
-      const expectedReturn =
-        parseFloat(row.cells[2].querySelector("input").value) || 0;
-      totaleInvestito += cost;
-      ricavoAttesoTotale += expectedReturn;
-    }
+  // Scansiona le righe della tabella investimenti
+  document.querySelectorAll(".investment-table tbody tr").forEach((row) => {
+    const cost = parseFloat(row.cells[1].querySelector("input").value) || 0;
+    const expectedReturn =
+      parseFloat(row.cells[2].querySelector("input").value) || 0;
+
+    totaleInvestito += cost; // Somma i costi degli investimenti
+    ricavoAttesoTotale += expectedReturn; // Somma i ricavi attesi
   });
 
-  // Calcola Prelievo Atteso come somma di Totale Investito e Ricavo Totale Atteso
+  // Calcola il prelievo atteso (totale investito + ricavo atteso)
   const prelievoAtteso = totaleInvestito + ricavoAttesoTotale;
 
-  // Visualizza i risultati
+  // Aggiorna il DOM con i valori calcolati
   document.getElementById("totaleInvestito").innerText =
-    totaleInvestito.toLocaleString("it-IT");
+    totaleInvestito.toLocaleString("it-IT", { minimumFractionDigits: 2 });
   document.getElementById("ricavoAttesoTotale").innerText =
-    ricavoAttesoTotale.toLocaleString("it-IT");
+    ricavoAttesoTotale.toLocaleString("it-IT", { minimumFractionDigits: 2 });
   document.getElementById("prelievoAtteso").innerText =
-    prelievoAtteso.toLocaleString("it-IT");
+    prelievoAtteso.toLocaleString("it-IT", { minimumFractionDigits: 2 });
 
-  calculateAnnualReturns(); // Aggiorna anche i ricavi annuali
+  // Aggiorna anche i ricavi annuali
+  calculateAnnualReturns();
 }

@@ -2,10 +2,10 @@
 :root {
   --color-primary: #2c3e50; /* Blu scuro */
   --color-secondary: #18bc9c; /* Verde */
-  --color-accent: #e74c3c; /* Rosso accento */
+  --color-accent: #18bc9c;
   --color-light: #ecf0f1; /* Grigio chiaro */
   --color-dark: #34495e; /* Grigio scuro */
-  --color-lighter-gray: #eaeaea; /* Grigio più chiaro */
+  --color-lighter-gray: #eaeaea; 
   --color-hover-gray: rgb(83, 83, 83); /* Hover */
   --spacing-small: 10px;
   --spacing-medium: 20px;
@@ -29,6 +29,69 @@ body {
   line-height: 1.6;
 }
 
+/* Stile generale per il remove button (X) */
+.remove-btn {
+  background: none; /* Nessuno sfondo */
+  border: none; /* Nessun bordo */
+  color: var(--color-secondary); /* Colore verde */
+  font-size: 1.2rem; /* Dimensione del testo */
+  cursor: pointer; /* Cambia il cursore in "pointer" */
+  margin: 0; /* Rimuove margini */
+  padding: 0; /* Rimuove padding */
+  position: absolute; /* Posizionamento assoluto */
+  top: 50%; /* Allinea verticalmente */
+  right: 10px; /* Allinea a destra */
+  transform: translateY(-50%); /* Correzione per il centraggio verticale */
+}
+
+.remove-btn:hover {
+  color: var(--color-accent); /* Cambia colore al passaggio del mouse */
+}
+
+/* Specifica per le tabelle (aggiunge il contesto) */
+#redditoTable .remove-btn {
+  right: 100px; /* Allinea a destra */
+}
+#attiviTable .remove-btn,
+#gestioneInvestimentiTable .remove-btn {
+  position: absolute; /* Abilita il posizionamento assoluto */
+  right: 10px; /* Allinea al margine destro della cella */
+  top: 50%; /* Centra verticalmente */
+  transform: translateY(-50%);
+}
+
+/* Stile specifico per la tabella Gestione Investimenti */
+#gestioneInvestimentiTable {
+  padding-right: 20px; /* Aumenta lo spazio a destra per includere la X */
+}
+
+#gestioneInvestimentiTable td {
+  position: relative; /* Mantiene il contesto per il posizionamento assoluto della X */
+  text-align: left; /* Allinea il testo delle celle */
+  vertical-align: middle; /* Centra verticalmente */
+}
+
+#gestioneInvestimentiTable .remove-btn {
+  position: absolute; /* Posizionamento assoluto */
+  top: 50%; /* Centra verticalmente */
+  right: 10px; /* Mantiene la distanza dal bordo destro */
+  transform: translateY(-50%); /* Corregge il centraggio verticale */
+}
+
+/* Regolazioni per celle con input */
+td {
+  position: relative; /* Rende ogni cella il contenitore del pulsante */
+  text-align: left; /* Contenuto testuale a sinistra */
+  vertical-align: middle; /* Centra verticalmente il contenuto */
+}
+
+.investment-table thead th {
+  padding-right: 20px; /* Aggiunge più spazio a destra */
+  padding-left: 10px; /* Eventuale aggiunta di spazio a sinistra per equilibrio */
+  text-align: left; /* Mantiene l'allineamento a sinistra */
+  white-space: nowrap; /* Evita che il contenuto vada a capo */
+}
+
 .container {
   max-width: 1200px;
   margin: auto;
@@ -37,6 +100,7 @@ body {
 
 .navbar {
   background-color: var(--color-primary);
+  border-bottom: 4px solid var(--color-secondary); /* Bordo superiore verde */
   color: var(--color-light);
   padding: var(--spacing-small) var(--spacing-medium);
   display: flex;

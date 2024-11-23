@@ -33,36 +33,106 @@
           <link rel="stylesheet" href="./style.css" />
     </head>
 <body>
-    <div id="loading-screen">
-        <img src="logo.png" alt="Logo" class="loading-logo">
-    </div>
     <div class="container">
         <div class="cashflow-title">CASHFLOW</div>
         <p class="cashflow-content">
             "Cashflow" è un programma pratico ispirato agli insegnamenti di Robert T. Kiyosaki, progettato per guidare gli utenti nella realizzazione e gestione del proprio cash flow, passo fondamentale verso la libertà finanziaria.
         </p>
-        <div class="options-menu">
-            <button onclick="toggleOptionsMenu()" class="options-btn">☰</button>
-            <div id="dropdownMenu" class="dropdown-content">
-                <div style="display: flex; justify-content: space-around; padding: 10px;">
-                    <div>
-                        <p style="font-weight: bold; text-align: center;">Localhost</p>
-                        <button onclick="saveData()">Salva Localhost</button>
-                        <button onclick="loadData()">Carica Localhost</button>
-                    </div>
-                    <div>
-                        <p style="font-weight: bold; text-align: center;">Backup</p>
-                        <button onclick="exportData()">Esporta Dati</button>
-                        <button onclick="importData()">Importa Dati</button>
-                    </div>
-                    <div>
-                        <p style="font-weight: bold; text-align: center;">Sistema</p>
-                        <button onclick="confirmRestart()">Riavvia</button>
-                        <button onclick="confirmReset()">Ripristina</button>
-                    </div>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Cashflow</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarOptions"
+                    aria-controls="navbarOptions"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarOptions">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- Sezione Localhost -->
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="localhostDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Localhost
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="localhostDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="saveData()">
+                                        Salva Localhost
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="loadData()">
+                                        Carica Localhost
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Sezione Backup -->
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="backupDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Backup
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="backupDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="exportData()">
+                                        Esporta Dati
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="importData()">
+                                        Importa Dati
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Sezione Sistema -->
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                href="#"
+                                id="sistemaDropdown"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Sistema
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="sistemaDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="confirmRestart()">
+                                        Riavvia
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="confirmReset()">
+                                        Ripristina
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-            </div>            
-        </div>      
+            </div>
+        </nav>
         <div class="title">
             CONTO PROFITTI E PERDITE<sup class="info-icon">ⓘ<span class="tooltip">Compila questa tabella inserendo le tue fonti di reddito e le tue spese mensili per calcolare il tuo cashflow.</span></sup>
         </div>
@@ -189,6 +259,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./main.js"></script>
 </body>
 </html>

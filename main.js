@@ -253,22 +253,6 @@ function addImmobile() {
   calculateTotals();
 }
 
-function toggleOptionsMenu() {
-  const dropdownMenu = document.getElementById("dropdownMenu");
-  dropdownMenu.style.display =
-    dropdownMenu.style.display === "block" ? "none" : "block";
-}
-
-// Chiude il menu a tendina se si clicca fuori di esso
-window.onclick = function (event) {
-  if (!event.target.matches(".options-btn")) {
-    const dropdownMenu = document.getElementById("dropdownMenu");
-    if (dropdownMenu.style.display === "block") {
-      dropdownMenu.style.display = "none";
-    }
-  }
-};
-
 function addPassivoImmobile() {
   const passiviTable = document.getElementById("passiviTable");
   const row = document.createElement("tr");
@@ -407,7 +391,9 @@ function saveData() {
   };
 
   // Salva reddito
-  const redditoRows = document.getElementById("redditoTable").querySelectorAll("tr");
+  const redditoRows = document
+    .getElementById("redditoTable")
+    .querySelectorAll("tr");
   redditoRows.forEach((row, index) => {
     if (index >= 1) {
       const description = row.cells[0].textContent.trim();
@@ -417,13 +403,17 @@ function saveData() {
   });
 
   // Salva spese
-  const speseInputs = document.getElementById("speseTable").querySelectorAll("input");
+  const speseInputs = document
+    .getElementById("speseTable")
+    .querySelectorAll("input");
   speseInputs.forEach((input) => {
     data.speseData[input.id] = input.value || "0";
   });
 
   // Salva passivi
-  const passiviRows = document.getElementById("passiviTable").querySelectorAll("tr");
+  const passiviRows = document
+    .getElementById("passiviTable")
+    .querySelectorAll("tr");
   passiviRows.forEach((row, index) => {
     if (index >= 0) {
       const description = row.cells[0].textContent.trim();
@@ -433,7 +423,9 @@ function saveData() {
   });
 
   // Salva attivi
-  const attiviRows = document.getElementById("attiviTable").querySelectorAll("tr");
+  const attiviRows = document
+    .getElementById("attiviTable")
+    .querySelectorAll("tr");
   attiviRows.forEach((row, index) => {
     if (index > 0) {
       const tipo = row.cells[0].querySelector("select").value;
@@ -444,7 +436,9 @@ function saveData() {
   });
 
   // Salva investimenti
-  const investmentRows = document.getElementById("investmentTable").querySelectorAll("tr");
+  const investmentRows = document
+    .getElementById("investmentTable")
+    .querySelectorAll("tr");
   investmentRows.forEach((row, index) => {
     if (index > 0) {
       const description = row.cells[0].querySelector("input").value || "";
@@ -463,7 +457,6 @@ function saveData() {
   localStorage.setItem("financialData", JSON.stringify(data));
   alert("Dati salvati con successo!");
 }
-
 
 function loadData() {
   const dataStr = localStorage.getItem("financialData");
@@ -550,7 +543,6 @@ function loadData() {
 
   alert("Dati caricati con successo!");
 }
-
 
 window.onload = function () {
   calculateTotals();

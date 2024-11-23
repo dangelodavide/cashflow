@@ -130,14 +130,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="cashflow.html">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="investments.html">Gestione Investimenti</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -217,7 +209,44 @@
                 <td class="totals">Patrimonio Netto: €<span id="patrimonioNetto">0</span></td>
             </tr>
         </table>
-    </div>   
+    </div>
+    <div class="container mt-5">
+        <div class="investment-section">
+            <div class="investment-title">
+                GESTIONE INVESTIMENTI
+            </div>            
+            <div class="investment-content">
+                <div class="sort-options-container">
+                    <label for="sortOptions">Ordina per:</label>
+                    <select id="sortOptions" onchange="sortInvestmentData()">
+                        <option value="date-asc">Data Ricavo (Anno) Ascendente</option>
+                        <option value="date-desc">Data Ricavo (Anno) Discendente</option>
+                        <option value="description-asc">Descrizione (A-Z)</option>
+                        <option value="description-desc">Descrizione (Z-A)</option>
+                        <option value="cost-asc">Costo Investimento (Min-Max)</option>
+                        <option value="cost-desc">Costo Investimento (Max-Min)</option>
+                        <option value="return-asc">Ricavo Atteso (Min-Max)</option>
+                        <option value="return-desc">Ricavo Atteso (Max-Min)</option>
+                    </select>
+                </div>
+                <table id="investmentTable" class="investment-table">
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Costo Investimento</th>
+                        <th>Ricavo Atteso</th>
+                        <th>Data Ricavo</th>
+                    </tr>
+                </table>                         
+                <button class="add-btn" onclick="addInvestment()">Aggiungi</button>
+                <div style="display: flex; gap: 20px; justify-content: center; margin-top: 15px;">
+                    <div class="totals-investment">Totale Investito: €<span id="totaleInvestito">0</span></div>
+                    <div class="totals-investment">Ricavo Atteso: €<span id="ricavoAttesoTotale">0</span></div>
+                    <div class="totals-investment">Prelievo Atteso: €<span id="prelievoAtteso">0</span></div>
+                </div>
+                <div id="annualReturns" class="annual-returns"></div>
+            </div>  
+        </div>
+    </div>
             <!-- <div class="note-section">
                 <div class="note-title">NOTE</div>
                 <div class="note-content">

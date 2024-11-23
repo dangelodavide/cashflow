@@ -162,6 +162,10 @@
             <div class="income-expenses-table">
                 <p class="subtitle">SPESE</p>
                 <table id="speseTable">
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Valore</th>
+                    </tr>
                     <tr><td>Imposte</td><td><input type="number" id="imposte" oninput="calculateTotals()" placeholder="0"></td></tr>
                     <tr><td>Rata del mutuo-casa</td><td><input type="number" id="mutuoCasa" oninput="calculateTotals()" placeholder="0"></td></tr>
                     <tr><td>Rata del prestito scolastico</td><td><input type="number" id="prestitoScolastico" oninput="calculateTotals()" placeholder="0"></td></tr>
@@ -199,6 +203,10 @@
             <div class="balance-table">
                 <p class="subtitle">PASSIVI</p>
                 <table id="passiviTable">
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Valore</th>
+                    </tr>
                     <tr><td>Mutuo casa</td><td><input type="number" id="passiviMutuoCasa" placeholder="0" oninput="calculateRisparmi()"></td></tr>
                     <tr><td>Prestiti scolastici</td><td><input type="number" id="passiviPrestitiScolastici" placeholder="0" oninput="calculateRisparmi()"></td></tr>
                     <tr><td>Prestiti per l'auto</td><td><input type="number" id="passiviPrestitoAuto" placeholder="0" oninput="calculateRisparmi()"></td></tr>
@@ -217,41 +225,44 @@
             </tr>
         </table>
     </div>
-    <div class="container mt-5">
-        <div class="investment-section">
-            <div class="investment-title">
-                GESTIONE INVESTIMENTI
-            </div>            
-            <div class="investment-content">
-                <div class="sort-options-container">
-                    <label for="sortOptions">Ordina per:</label>
-                    <select id="sortOptions" onchange="sortInvestmentData()">
-                        <option value="date-asc">Data Ricavo (Anno) Ascendente</option>
-                        <option value="date-desc">Data Ricavo (Anno) Discendente</option>
-                        <option value="description-asc">Descrizione (A-Z)</option>
-                        <option value="description-desc">Descrizione (Z-A)</option>
-                        <option value="cost-asc">Costo Investimento (Min-Max)</option>
-                        <option value="cost-desc">Costo Investimento (Max-Min)</option>
-                        <option value="return-asc">Ricavo Atteso (Min-Max)</option>
-                        <option value="return-desc">Ricavo Atteso (Max-Min)</option>
-                    </select>
-                </div>
-                <table id="investmentTable" class="investment-table">
-                    <tr>
-                        <th>Descrizione</th>
-                        <th>Costo Investimento</th>
-                        <th>Ricavo Atteso</th>
-                        <th>Data Ricavo</th>
-                    </tr>
-                </table>                         
-                <button class="add-btn" onclick="addInvestment()">Aggiungi</button>
-                <div style="display: flex; gap: 20px; justify-content: center; margin-top: 15px;">
-                    <div class="totals-investment">Totale Investito: €<span id="totaleInvestito">0</span></div>
-                    <div class="totals-investment">Ricavo Atteso: €<span id="ricavoAttesoTotale">0</span></div>
-                    <div class="totals-investment">Prelievo Atteso: €<span id="prelievoAtteso">0</span></div>
-                </div>
-                <div id="annualReturns" class="annual-returns"></div>
-            </div>  
+    <div class="investment-section">
+        <div class="title">
+          GESTIONE INVESTIMENTI
+        </div>
+        <div class="investment-content">
+          <table class="investment-table">
+            <thead>
+              <tr>
+                <th>Descrizione</th>
+                <th>Costo Investimento</th>
+                <th>Ricavo Atteso</th>
+                <th>Data Ricavo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" placeholder="Descrizione"></td>
+                <td><input type="number" placeholder="0"></td>
+                <td><input type="number" placeholder="0"></td>
+                <td><input type="date"></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="add-btn" onclick="addInvestment()">Aggiungi</button>
+        </div>
+      
+        <!-- Totali visualizzati fuori dalla tabella -->
+        <div class="totals-section">
+          <table class="totals-table">
+            <tr>
+              <td class="totals">Totale Investito: €<span id="totaleInvestito">0</span></td>
+              <td class="totals">Ricavo Atteso: €<span id="ricavoAttesoTotale">0</span></td>
+              <td class="totals">Prelievo Atteso: €<span id="prelievoAtteso">0</span></td>
+            </tr>
+          </table>
+        </div>
+      </div>      
+    </div>    
         </div>
     </div>
             <!-- <div class="note-section">

@@ -404,12 +404,10 @@ function saveData() {
     passiviData: [],
     attiviData: [],
     investmentsData: [],
-    notesData: [],
   };
 
-  const redditoRows = document
-    .getElementById("redditoTable")
-    .querySelectorAll("tr");
+  // Salva reddito
+  const redditoRows = document.getElementById("redditoTable").querySelectorAll("tr");
   redditoRows.forEach((row, index) => {
     if (index >= 1) {
       const description = row.cells[0].textContent.trim();
@@ -418,25 +416,24 @@ function saveData() {
     }
   });
 
-  const speseInputs = document
-    .getElementById("speseTable")
-    .querySelectorAll("input");
+  // Salva spese
+  const speseInputs = document.getElementById("speseTable").querySelectorAll("input");
   speseInputs.forEach((input) => {
     data.speseData[input.id] = input.value || "0";
   });
 
-  const passiviRows = document
-    .getElementById("passiviTable")
-    .querySelectorAll("tr");
-  passiviRows.forEach((row) => {
-    const description = row.cells[0].textContent.trim();
-    const value = row.cells[1].querySelector("input").value || "0";
-    data.passiviData.push({ description, value });
+  // Salva passivi
+  const passiviRows = document.getElementById("passiviTable").querySelectorAll("tr");
+  passiviRows.forEach((row, index) => {
+    if (index >= 0) {
+      const description = row.cells[0].textContent.trim();
+      const value = row.cells[1].querySelector("input").value || "0";
+      data.passiviData.push({ description, value });
+    }
   });
 
-  const attiviRows = document
-    .getElementById("attiviTable")
-    .querySelectorAll("tr");
+  // Salva attivi
+  const attiviRows = document.getElementById("attiviTable").querySelectorAll("tr");
   attiviRows.forEach((row, index) => {
     if (index > 0) {
       const tipo = row.cells[0].querySelector("select").value;
@@ -446,10 +443,8 @@ function saveData() {
     }
   });
 
-  // Save investment data
-  const investmentRows = document
-    .getElementById("investmentTable")
-    .querySelectorAll("tr");
+  // Salva investimenti
+  const investmentRows = document.getElementById("investmentTable").querySelectorAll("tr");
   investmentRows.forEach((row, index) => {
     if (index > 0) {
       const description = row.cells[0].querySelector("input").value || "";
@@ -465,15 +460,10 @@ function saveData() {
     }
   });
 
-  const noteItems = document.querySelectorAll("#noteList .note-item");
-  noteItems.forEach((noteItem) => {
-    const noteText = noteItem.querySelector("input").value || "";
-    data.notesData.push(noteText);
-  });
-
   localStorage.setItem("financialData", JSON.stringify(data));
   alert("Dati salvati con successo!");
 }
+
 
 function loadData() {
   const dataStr = localStorage.getItem("financialData");
@@ -483,6 +473,7 @@ function loadData() {
   }
   const data = JSON.parse(dataStr);
 
+  // Ripopola reddito
   const redditoTable = document.getElementById("redditoTable");
   while (redditoTable.rows.length > 2) {
     redditoTable.deleteRow(2);
@@ -497,43 +488,35 @@ function loadData() {
     }
   });
 
+  // Ripopola spese
   for (const id in data.speseData) {
     if (document.getElementById(id)) {
       document.getElementById(id).value = data.speseData[id];
     }
   }
 
+  // Ripopola passivi
   const passiviTable = document.getElementById("passiviTable");
   while (passiviTable.rows.length > 5) {
     passiviTable.deleteRow(5);
   }
-  data.passiviData.forEach((item, index) => {
-    if (index < 5) {
-      const input = passiviTable.rows[index].cells[1].querySelector("input");
-      input.value = item.value;
-    } else {
-      const row = passiviTable.insertRow();
-      const cellDescription = row.insertCell(0);
-      cellDescription.textContent = item.description;
+  data.passiviData.forEach((item) => {
+    const row = passiviTable.insertRow();
+    const cellDescription = row.insertCell(0);
+    cellDescription.textContent = item.description;
 
-      const cellValue = row.insertCell(1);
-      const inputValue = document.createElement("input");
-      inputValue.type = "number";
-      inputValue.value = item.value;
-      inputValue.oninput = calculateTotals;
-      cellValue.appendChild(inputValue);
+    const cellValue = row.insertCell(1);
+    const inputValue = document.createElement("input");
+    inputValue.type = "number";
+    inputValue.value = item.value;
+    inputValue.oninput = calculateRisparmi;
+    cellValue.appendChild(inputValue);
 
-      const removeBtn = document.createElement("button");
-      removeBtn.classList.add("remove-btn");
-      removeBtn.textContent = "X";
-      removeBtn.onclick = () => {
-        row.remove();
-        calculateTotals();
-      };
-      cellDescription.appendChild(removeBtn);
-    }
+    row.appendChild(cellDescription);
+    row.appendChild(cellValue);
   });
 
+  // Ripopola attivi
   const attiviTable = document.getElementById("attiviTable");
   while (attiviTable.rows.length > 1) {
     attiviTable.deleteRow(1);
@@ -546,7 +529,7 @@ function loadData() {
     row.cells[2].querySelector("input").value = item.valore;
   });
 
-  // Load investment data
+  // Ripopola investimenti
   const investmentTable = document.getElementById("investmentTable");
   while (investmentTable.rows.length > 1) {
     investmentTable.deleteRow(1);
@@ -560,14 +543,6 @@ function loadData() {
     row.cells[3].querySelector("input").value = item.expectedDate;
   });
 
-  const noteList = document.getElementById("noteList");
-  noteList.innerHTML = "";
-  data.notesData.forEach((noteText) => {
-    addNote();
-    const noteItem = noteList.lastChild;
-    noteItem.querySelector("input").value = noteText;
-  });
-
   calculateTotals();
   calculateRisparmi();
   calculateInvestmentTotals();
@@ -575,6 +550,7 @@ function loadData() {
 
   alert("Dati caricati con successo!");
 }
+
 
 window.onload = function () {
   calculateTotals();

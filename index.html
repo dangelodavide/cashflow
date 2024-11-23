@@ -36,7 +36,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="./assets/logo.png" alt="Logo"> CashFlow</a>
+            <a class="navbar-brand" href="#"><img src="./assets/logodefault.png" alt="Logo"></a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -50,69 +50,23 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarOptions">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <!-- Sezione Localhost -->
+                    <!-- Sezione Impostazioni -->
                     <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
                             href="#"
-                            id="localhostDropdown"
+                            id="settingsDropdown"
                             role="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                         >
-                            Localhost
+                            Impostazioni
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="localhostDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                            <!-- Opzioni Sistema -->
                             <li>
-                                <a class="dropdown-item" href="#" onclick="saveData()">
-                                    Salva Localhost
-                                </a>
+                                <h6 class="dropdown-header">Sistema</h6>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="loadData()">
-                                    Carica Localhost
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Sezione Backup -->
-                    <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            id="backupDropdown"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Backup
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="backupDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="exportData()">
-                                    Esporta Dati
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#" onclick="importData()">
-                                    Importa Dati
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Sezione Sistema -->
-                    <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            id="sistemaDropdown"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Sistema
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="sistemaDropdown">
                             <li>
                                 <a class="dropdown-item" href="#" onclick="confirmRestart()">
                                     Riavvia
@@ -123,10 +77,37 @@
                                     Ripristina
                                 </a>
                             </li>
+                            <!-- Opzioni Localhost -->
+                            <li>
+                                <h6 class="dropdown-header">LocalHost</h6>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="saveData()">
+                                    Salva
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="loadData()">
+                                    Carica
+                                </a>
+                            </li>
+                            <!-- Opzioni Backup -->
+                            <li>
+                                <h6 class="dropdown-header">Dati</h6>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="exportData()">
+                                    Esporta
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="importData()">
+                                    Importa
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                </ul>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Altri link -->
                     <li class="nav-item">
                         <a class="nav-link active" href="index.html">Dashboard</a>
                     </li>
@@ -136,8 +117,7 @@
                 </ul>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>    
         
     <div class="container">
         <div class="title">

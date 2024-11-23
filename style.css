@@ -25,10 +25,11 @@ body {
   display: flex;
   align-items: center;
   font-size: 1rem;
-  img {
-    height: 24px;
-    margin-right: 5px;
-  }
+}
+
+.navbar-brand img {
+  height: 24px;
+  margin-right: 5px;
 }
 
 .container {

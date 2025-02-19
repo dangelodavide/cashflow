@@ -1,32 +1,34 @@
-// Funzione per richiedere conferma e ricaricare la pagina
 function confirmRestart() {
   if (
     confirm(
       "Sei sicuro di voler riavviare la pagina? Tutte le modifiche non salvate andranno perse."
     )
   ) {
-    location.reload(); // Ricarica la pagina
+    location.reload();
   }
 }
 
-// Funzione per richiedere conferma e ripristinare i dati cancellando il localStorage
 function confirmReset() {
   if (
     confirm(
       "Sei sicuro di voler ripristinare tutti i dati? Questa azione cancellerà permanentemente tutti i dati salvati."
     )
   ) {
-    localStorage.clear(); // Cancella tutti i dati dal localStorage
+    localStorage.clear();
     alert("Dati ripristinati con successo.");
-    location.reload(); // Ricarica la pagina per applicare le modifiche
+    location.reload();
   }
 }
 
 function exportData() {
+  console.log("📤 Esportazione dati in corso...");
+
   const dataStr = localStorage.getItem("financialData");
+
   if (!dataStr) {
-    alert("Nessun dato trovato per l'esportazione.");
-    return;
+      alert("⚠️ Nessun dato trovato per l'esportazione.");
+      console.warn("❌ Export fallito: nessun dato trovato.");
+      return;
   }
 
   const blob = new Blob([dataStr], { type: "application/json" });
@@ -37,6 +39,9 @@ function exportData() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+
+  console.log("✅ Export completato con successo!");
+  alert("✅ Dati esportati con successo!");
 }
 
 function addNote() {
@@ -69,7 +74,6 @@ function addNote() {
   noteList.appendChild(noteItem);
 }
 
-// Funzione per aggiornare i numeri delle note
 function updateNoteNumbers() {
   const notes = document.querySelectorAll("#noteList .note-item");
   notes.forEach((note, index) => {
@@ -81,25 +85,20 @@ function sortInvestmentData() {
   const sortOption = document.getElementById("sortOptions").value;
   const [field, order] = sortOption.split("-");
 
-  // Get investment data from the table
   const investments = [];
   const investmentRows = document.querySelectorAll("#investmentTable tr");
   investmentRows.forEach((row, index) => {
     if (index > 0) {
-      // Skip the header row
       const description = row.cells[0].querySelector("input").value || "";
       const cost = parseFloat(row.cells[1].querySelector("input").value) || 0;
       const expectedReturn =
         parseFloat(row.cells[2].querySelector("input").value) || 0;
       const dateValue = row.cells[3].querySelector("input").value;
-
-      // Parse the date to a sortable format if it exists
       const date = dateValue ? new Date(dateValue) : null;
       investments.push({ description, cost, expectedReturn, date });
     }
   });
 
-  // Sort based on the selected option and order
   investments.sort((a, b) => {
     let comparison = 0;
     if (field === "date") {
@@ -112,11 +111,9 @@ function sortInvestmentData() {
       comparison = a.expectedReturn - b.expectedReturn;
     }
 
-    // Reverse comparison for descending order
     return order === "desc" ? -comparison : comparison;
   });
 
-  // Re-populate the table and update the chart with the sorted data
   updateInvestmentTable(investments);
   createInvestmentTimelineChart(investments);
 }
@@ -124,37 +121,31 @@ function sortInvestmentData() {
 function updateInvestmentTable(investments) {
   const investmentTable = document.getElementById("investmentTable");
 
-  // Clear existing rows (except for header)
   while (investmentTable.rows.length > 1) {
     investmentTable.deleteRow(1);
   }
 
-  // Re-add rows based on sorted data
   investments.forEach((investment) => {
     const row = investmentTable.insertRow();
 
-    // Description cell
     const cellDescription = row.insertCell(0);
     const descriptionInput = document.createElement("input");
     descriptionInput.type = "text";
     descriptionInput.value = investment.description;
     cellDescription.appendChild(descriptionInput);
 
-    // Cost cell
     const cellCost = row.insertCell(1);
     const costInput = document.createElement("input");
     costInput.type = "number";
     costInput.value = investment.cost;
     cellCost.appendChild(costInput);
 
-    // Expected Return cell
     const cellReturn = row.insertCell(2);
     const returnInput = document.createElement("input");
     returnInput.type = "number";
     returnInput.value = investment.expectedReturn;
     cellReturn.appendChild(returnInput);
 
-    // Date cell
     const cellDate = row.insertCell(3);
     const dateInput = document.createElement("input");
     dateInput.type = "date";
@@ -169,7 +160,6 @@ function calculateAnnualReturns() {
   const annualReturns = {};
   const investmentRows = document.querySelectorAll(".investment-table tbody tr");
 
-  // Calcola i ricavi annuali
   investmentRows.forEach((row) => {
     const expectedReturn =
       parseFloat(row.cells[2].querySelector("input").value) || 0;
@@ -184,11 +174,9 @@ function calculateAnnualReturns() {
     }
   });
 
-  // Crea il contenitore dinamico per gli anni
   const annualReturnsDiv = document.getElementById("annualReturns");
-  annualReturnsDiv.innerHTML = ""; // Svuota i contenuti precedenti
+  annualReturnsDiv.innerHTML = ""; 
 
-  // Genera una riga per ciascun anno con i ricavi
   const table = document.createElement("table");
   table.classList.add("totals-table");
   for (const year in annualReturns) {
@@ -202,8 +190,201 @@ function calculateAnnualReturns() {
     table.appendChild(row);
   }
 
-  // Aggiungi la tabella al div dei ricavi annuali
   annualReturnsDiv.appendChild(table);
+}
+
+function generateIncomeExpenseChart() {
+  console.log("📊 Generazione grafico Reddito e Spese...");
+
+  const chartContainer = document.querySelector(".chart-container");
+  const incomeExpenseCanvas = document.getElementById("incomeExpenseChart");
+
+  if (!incomeExpenseCanvas || !chartContainer) {
+      console.error("❌ Canvas o container del grafico non trovati!");
+      return;
+  }
+
+  let redditoTotale = parseFloat(document.getElementById("redditoTotale").innerText.replace(" €", "").replace(/\./g, "").replace(",", ".")) || 0;
+  let speseTotali = parseFloat(document.getElementById("speseTotali").innerText.replace(" €", "").replace(/\./g, "").replace(",", ".")) || 0;
+  let cashflowMensile = parseFloat(document.getElementById("cashflowMensile").innerText.replace(" €", "").replace(/\./g, "").replace(",", ".")) || 0;
+
+  console.log("✅ Valori estratti per il grafico:", { redditoTotale, speseTotali, cashflowMensile });
+
+  if (redditoTotale === 0 && speseTotali === 0 && cashflowMensile === 0) {
+      console.warn("⚠️ Nessun dato valido per generare il grafico.");
+      incomeExpenseCanvas.classList.remove("active");
+      chartContainer.style.display = "none";
+      return;
+  }
+
+  chartContainer.style.display = "block";
+  incomeExpenseCanvas.classList.add("active");
+
+  if (window.incomeExpenseChart instanceof Chart) {
+      window.incomeExpenseChart.destroy();
+  }
+
+  let maxY = Math.max(redditoTotale, speseTotali, cashflowMensile) * 1.2;
+
+  const ctx = incomeExpenseCanvas.getContext("2d");
+  window.incomeExpenseChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+          labels: ["Reddito Totale", "Spese Totali", "Cashflow Mensile"],
+          datasets: [
+              {
+                  label: "Importi (€)",
+                  data: [redditoTotale, speseTotali, cashflowMensile],
+                  backgroundColor: [
+                      "rgba(54, 162, 235, 0.6)",  
+                      "rgba(255, 99, 132, 0.6)", 
+                      "rgba(75, 192, 192, 0.6)", 
+                  ],
+                  borderColor: [
+                      "rgba(54, 162, 235, 1)",
+                      "rgba(255, 99, 132, 1)",
+                      "rgba(75, 192, 192, 1)",
+                  ],
+                  borderWidth: 1,
+              }
+          ],
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  max: maxY,
+                  title: { display: true, text: "Euro (€)" },
+              },
+          },
+      },
+  });
+
+  console.log("✅ Grafico Reddito e Spese generato!");
+}
+
+function generateInvestmentCharts() {
+  console.log("Generazione grafici...");
+
+  const investmentRows = document.querySelectorAll(".investment-table tbody tr");
+
+  let labels = [];
+  let investmentCosts = [];
+  let expectedReturns = [];
+  let dates = [];
+
+  investmentRows.forEach(row => {
+    let description = row.cells[0].querySelector("input").value || "Senza Nome";
+    let cost = parseFloat(row.cells[1].querySelector("input").value) || 0;
+    let expectedReturn = parseFloat(row.cells[2].querySelector("input").value) || 0;
+    let date = row.cells[3].querySelector("input").value || "";
+
+    labels.push(description);
+    investmentCosts.push(cost);
+    expectedReturns.push(expectedReturn);
+    dates.push(date);
+  });
+
+  if (investmentCosts.every(val => val === 0) && expectedReturns.every(val => val === 0)) {
+    console.warn("⚠️ Nessun dato disponibile per generare i grafici.");
+    document.getElementById("investmentTimelineChart").classList.remove("active");
+    document.getElementById("investmentComparisonChart").classList.remove("active");
+    document.getElementById("investmentDistributionChart").classList.remove("active");
+    return;
+  }
+
+  console.log("📊 Dati per i grafici:", { labels, investmentCosts, expectedReturns, dates });
+
+  document.getElementById("investmentTimelineChart").classList.add("active");
+  document.getElementById("investmentComparisonChart").classList.add("active");
+  document.getElementById("investmentDistributionChart").classList.add("active");
+
+  if (window.investmentTimelineChart instanceof Chart) {
+    window.investmentTimelineChart.destroy();
+  }
+  if (window.investmentComparisonChart instanceof Chart) {
+    window.investmentComparisonChart.destroy();
+  }
+  if (window.investmentDistributionChart instanceof Chart) {
+    window.investmentDistributionChart.destroy();
+  }
+
+  const timelineCanvas = document.getElementById("investmentTimelineChart");
+  const timelineCtx = timelineCanvas.getContext("2d");
+
+  let investmentData = dates
+    .map((date, index) => {
+      let validDate = date ? new Date(date) : null;
+      return { date: validDate, expectedReturn: expectedReturns[index] };
+    })
+    .filter(item => item.date !== null && !isNaN(item.date))
+    .sort((a, b) => a.date - b.date);
+
+  const sortedDates = investmentData.map(item => item.date.toISOString().split("T")[0]);
+  const sortedReturns = investmentData.map(item => item.expectedReturn);
+
+  window.investmentTimelineChart = new Chart(timelineCtx, {
+    type: "line",
+    data: {
+      labels: sortedDates,
+      datasets: [{
+        label: "Ricavo Atteso nel Tempo",
+        data: sortedReturns,
+        fill: false,
+        borderColor: "rgba(75, 192, 192, 1)",
+        tension: 0.3,
+      }],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { type: "category" },
+        y: { beginAtZero: true },
+      },
+    },
+  });
+
+  const comparisonCanvas = document.getElementById("investmentComparisonChart");
+  const comparisonCtx = comparisonCanvas.getContext("2d");
+
+  window.investmentComparisonChart = new Chart(comparisonCtx, {
+    type: "bar",
+    data: {
+      labels: dates,
+      datasets: [
+        {
+          label: "Costo Investimento",
+          data: investmentCosts,
+          backgroundColor: "rgba(255, 99, 132, 0.6)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+        {
+          label: "Ricavo Atteso",
+          data: expectedReturns,
+          backgroundColor: "rgba(54, 162, 235, 0.6)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: "category",
+          title: { display: true },
+          display: true
+        },
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+  });
+
+  console.log("✅ Grafici generati correttamente!");
 }
 
 function importData() {
@@ -212,50 +393,67 @@ function importData() {
   fileInput.accept = ".json";
 
   fileInput.onchange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        localStorage.setItem("financialData", JSON.stringify(data));
-        loadData(); // Chiama la funzione per caricare i dati nella pagina
-        alert("Dati importati con successo!");
-      } catch (error) {
-        alert(
-          "Errore nell'importazione del file: il file potrebbe non essere formattato correttamente."
-        );
-      }
-    };
+      reader.onload = (e) => {
+          try {
+              const importedData = JSON.parse(e.target.result);
+              console.log("📂 Dati importati:", importedData);
 
-    reader.readAsText(file);
+              if (!importedData.redditoData) {
+                  alert("❌ Il file importato non contiene dati validi.");
+                  return;
+              }
+
+              // ✅ Rimuove automaticamente la "X" dai nomi importati
+              importedData.redditoData.forEach(item => {
+                  item.description = item.description.replace(/X$/, "").trim();
+              });
+
+              localStorage.setItem("financialData", JSON.stringify(importedData));
+              console.log("✅ Dati importati nel localStorage.");
+
+              loadData(); // Ricarica i dati mantenendo le intestazioni
+              alert("✅ Dati importati con successo!");
+          } catch (error) {
+              alert("❌ Errore nell'importazione del file.");
+              console.error("Errore nel parsing JSON:", error);
+          }
+      };
+
+      reader.readAsText(file);
   };
 
   fileInput.click();
 }
+
 function addImmobile() {
   const redditoTable = document.getElementById("redditoTable");
   const row = document.createElement("tr");
+
   const cellDescription = document.createElement("td");
   cellDescription.classList.add("position-relative");
   cellDescription.textContent = "Immobili/Imprese";
+
+  const removeBtn = document.createElement("button");
+  removeBtn.classList.add("remove-btn");
+  removeBtn.textContent = "X";
+
+  removeBtn.onclick = function () {
+      row.remove();
+      calculateTotals();
+  };
+
+  cellDescription.appendChild(removeBtn);
 
   const cellCashflow = document.createElement("td");
   const cashflowInput = document.createElement("input");
   cashflowInput.type = "number";
   cashflowInput.placeholder = "0";
   cashflowInput.oninput = calculateTotals;
+
   cellCashflow.appendChild(cashflowInput);
-
-  const removeBtn = document.createElement("button");
-  removeBtn.classList.add("remove-btn");
-  removeBtn.textContent = "X";
-  removeBtn.onclick = () => {
-    row.remove();
-    calculateTotals();
-  };
-  cellDescription.appendChild(removeBtn);
-
   row.appendChild(cellDescription);
   row.appendChild(cellCashflow);
   redditoTable.appendChild(row);
@@ -338,29 +536,58 @@ function addAttivo() {
   calculateRisparmi();
 }
 
+function parseNumber(value) {
+  if (!value) return 0;
+
+  // 1️⃣ Rimuove tutti gli spazi bianchi
+  value = value.trim();
+
+  // 2️⃣ Se il numero contiene sia punto che virgola, assume che il punto sia il separatore delle migliaia
+  if (value.includes(".") && value.includes(",")) {
+      value = value.replace(/\./g, "").replace(",", ".");
+  } 
+  // 3️⃣ Se contiene solo la virgola, assume che sia il separatore decimale
+  else if (value.includes(",")) {
+      value = value.replace(",", ".");
+  }
+
+  return parseFloat(value) || 0;
+}
+
 function calculateTotals() {
-  let redditoTotale =
-    parseFloat(document.getElementById("stipendio").value) || 0;
-  document
-    .querySelectorAll("#redditoTable input[type='number']")
-    .forEach((input, index) => {
-      if (index > 0) redditoTotale += parseFloat(input.value) || 0;
-    });
-  document.getElementById("redditoTotale").innerText =
-    redditoTotale.toLocaleString("it-IT");
+  console.log("🔄 Ricalcolo Totali...");
 
+  let redditoTotale = 0;
   let speseTotali = 0;
-  document
-    .querySelectorAll("#speseTable input[type='number']")
-    .forEach((input) => {
-      speseTotali += parseFloat(input.value) || 0;
-    });
-  document.getElementById("speseTotali").innerText =
-    speseTotali.toLocaleString("it-IT");
 
-  const cashflowMensile = redditoTotale - speseTotali;
-  document.getElementById("cashflowMensile").innerText =
-    cashflowMensile.toLocaleString("it-IT");
+  document.querySelectorAll("#redditoTable tbody tr").forEach(row => {
+      let input = row.cells[1]?.querySelector("input");
+      if (input) {
+          let valore = parseNumber(input.value);
+          console.log(`➕ Aggiunto reddito da '${row.cells[0].textContent.trim()}': ${valore}`);
+          redditoTotale += valore;
+      }
+  });
+
+  document.querySelectorAll("#speseTable tbody tr").forEach(row => {
+      let input = row.cells[1]?.querySelector("input");
+      if (input) {
+          let valore = parseNumber(input.value);
+          console.log(`➖ Sottratta spesa '${row.cells[0].textContent.trim()}': ${valore}`);
+          speseTotali += valore;
+      }
+  });
+
+  let cashflowMensile = redditoTotale - speseTotali;
+  console.log(`📊 Reddito Totale: ${redditoTotale}, Spese Totali: ${speseTotali}, Cashflow Mensile: ${cashflowMensile}`);
+
+  document.getElementById("redditoTotale").innerText = `${redditoTotale.toLocaleString("it-IT", { minimumFractionDigits: 2 })} €`;
+  document.getElementById("speseTotali").innerText = `${speseTotali.toLocaleString("it-IT", { minimumFractionDigits: 2 })} €`;
+  document.getElementById("cashflowMensile").innerText = `${cashflowMensile.toLocaleString("it-IT", { minimumFractionDigits: 2 })} €`;
+
+  setTimeout(() => {
+      generateIncomeExpenseChart();
+  }, 500);
 }
 
 function calculateRisparmi() {
@@ -388,176 +615,222 @@ function calculateRisparmi() {
 window.onload = function () {
   calculateTotals();
   calculateRisparmi();
+  generateIncomeExpenseChart();
 };
 
 function saveData() {
+  console.log("💾 Tentativo di salvataggio dati...");
+
   const data = {
-    redditoData: [],
-    speseData: {},
-    passiviData: [],
-    attiviData: [],
-    investmentsData: [],
+      redditoData: [],
+      speseData: {},
+      passiviData: [],
+      attiviData: [],
+      investmentsData: [],
   };
 
-  // Salva reddito
-  const redditoRows = document
-    .getElementById("redditoTable")
-    .querySelectorAll("tr");
-  redditoRows.forEach((row, index) => {
-    if (index >= 1) {
-      const description = row.cells[0].textContent.trim();
-      const value = row.cells[1].querySelector("input").value || "0";
+  document.querySelectorAll("#redditoTable tbody tr").forEach(row => {
+      const cells = row.cells;
+      if (cells.length < 2) return;
+
+      const description = cells[0]?.textContent.trim();
+      const input = cells[1]?.querySelector("input");
+      if (!input) return;
+
+      const value = input.value || "0";
       data.redditoData.push({ description, value });
-    }
   });
 
-  // Salva spese
-  const speseInputs = document
-    .getElementById("speseTable")
-    .querySelectorAll("input");
-  speseInputs.forEach((input) => {
-    data.speseData[input.id] = input.value || "0";
+  document.querySelectorAll("#speseTable input[type='number']").forEach(input => {
+      if (input && input.id) {
+          data.speseData[input.id] = input.value || "0";
+      }
   });
 
-  // Salva passivi
-  const passiviRows = document
-    .getElementById("passiviTable")
-    .querySelectorAll("tr");
-  passiviRows.forEach((row, index) => {
-    if (index >= 0) {
-      const description = row.cells[0].textContent.trim();
-      const value = row.cells[1].querySelector("input").value || "0";
+  document.querySelectorAll("#passiviTable tbody tr").forEach(row => {
+      const cells = row.cells;
+      if (cells.length < 2) return;
+
+      const description = cells[0]?.textContent.trim();
+      const input = cells[1]?.querySelector("input");
+      if (!input) return;
+
+      const value = input.value || "0";
       data.passiviData.push({ description, value });
-    }
   });
 
-  // Salva attivi
-  const attiviRows = document
-    .getElementById("attiviTable")
-    .querySelectorAll("tr");
-  attiviRows.forEach((row, index) => {
-    if (index > 0) {
-      const tipo = row.cells[0].querySelector("select").value;
-      const descrizione = row.cells[1].querySelector("input").value || "";
-      const valore = row.cells[2].querySelector("input").value || "0";
-      data.attiviData.push({ tipo, descrizione, valore });
-    }
+  document.querySelectorAll("#attiviTable tbody tr").forEach(row => {
+      const cells = row.cells;
+      if (cells.length < 3) return;
+
+      const tipo = cells[0]?.querySelector("select")?.value || "";
+      const descrizione = cells[1]?.querySelector("input")?.value || "";
+      const valore = cells[2]?.querySelector("input")?.value || "0";
+      if (tipo) {
+          data.attiviData.push({ tipo, descrizione, valore });
+      }
   });
 
-  // Salva investimenti
-  const investmentRows = document
-    .getElementById("investmentTable")
-    .querySelectorAll("tr");
-  investmentRows.forEach((row, index) => {
-    if (index > 0) {
-      const description = row.cells[0].querySelector("input").value || "";
-      const cost = row.cells[1].querySelector("input").value || "0";
-      const expectedReturn = row.cells[2].querySelector("input").value || "0";
-      const expectedDate = row.cells[3].querySelector("input").value || "";
-      data.investmentsData.push({
-        description,
-        cost,
-        expectedReturn,
-        expectedDate,
-      });
-    }
+  document.querySelectorAll(".investment-table tbody tr").forEach(row => {
+      const cells = row.cells;
+      if (cells.length < 4) return;
+
+      const description = cells[0]?.querySelector("input")?.value || "";
+      const cost = cells[1]?.querySelector("input")?.value || "0";
+      const expectedReturn = cells[2]?.querySelector("input")?.value || "0";
+      const expectedDate = cells[3]?.querySelector("input")?.value || "";
+
+      if (description) {
+          data.investmentsData.push({ description, cost, expectedReturn, expectedDate });
+      }
   });
 
   localStorage.setItem("financialData", JSON.stringify(data));
-  alert("Dati salvati con successo!");
+
+  console.log("✅ Dati salvati con successo:", JSON.parse(localStorage.getItem("financialData")));
+  alert("✅ Dati salvati con successo!");
 }
 
 function loadData() {
-  const dataStr = localStorage.getItem("financialData");
+  console.log("📂 Caricamento dati da localStorage...");
+
+  let dataStr = localStorage.getItem("financialData");
+  let data;
+
   if (!dataStr) {
-    alert("Nessun dato salvato trovato.");
-    return;
+      console.warn("⚠️ Nessun dato trovato, inizializzo con valori di default...");
+      data = {
+          redditoData: [{ description: "Stipendio", value: "0" }],
+          speseData: { affitto: "0", bollette: "0", alimentari: "0" },
+          passiviData: [{ description: "Mutuo", value: "0" }],
+          attiviData: [{ tipo: "Azioni/Fondi/CD", descrizione: "Investimento iniziale", valore: "0" }],
+          investmentsData: []
+      };
+      localStorage.setItem("financialData", JSON.stringify(data));
+  } else {
+      try {
+          data = JSON.parse(dataStr);
+          console.log("📂 Dati caricati correttamente:", data);
+      } catch (error) {
+          console.error("❌ Errore nel parsing JSON, resetto i dati:", error);
+          localStorage.removeItem("financialData");
+          return;
+      }
   }
-  const data = JSON.parse(dataStr);
 
-  // Ripopola reddito
-  const redditoTable = document.getElementById("redditoTable");
-  while (redditoTable.rows.length > 2) {
-    redditoTable.deleteRow(2);
-  }
-  data.redditoData.forEach((item, index) => {
-    if (index === 0) {
-      document.getElementById("stipendio").value = item.value;
-    } else {
-      addImmobile();
-      const row = redditoTable.rows[redditoTable.rows.length - 1];
-      row.cells[1].querySelector("input").value = item.value;
-    }
+  // ✅ Rimuove la "X" dai nomi importati
+  data.redditoData.forEach(item => {
+      item.description = item.description.replace(/X$/, "").trim();
   });
 
-  // Ripopola spese
-  for (const id in data.speseData) {
-    if (document.getElementById(id)) {
-      document.getElementById(id).value = data.speseData[id];
-    }
-  }
+  localStorage.setItem("financialData", JSON.stringify(data));
 
-  // Ripopola passivi
-  const passiviTable = document.getElementById("passiviTable");
-  while (passiviTable.rows.length > 5) {
-    passiviTable.deleteRow(5);
-  }
-  data.passiviData.forEach((item) => {
-    const row = passiviTable.insertRow();
-    const cellDescription = row.insertCell(0);
-    cellDescription.textContent = item.description;
+  // 🟢 Caricamento TABELLA REDDITI (Manteniamo intestazione)
+  const redditoTable = document.querySelector("#redditoTable tbody");
+  redditoTable.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
 
-    const cellValue = row.insertCell(1);
-    const inputValue = document.createElement("input");
-    inputValue.type = "number";
-    inputValue.value = item.value;
-    inputValue.oninput = calculateRisparmi;
-    cellValue.appendChild(inputValue);
+  data.redditoData.forEach(item => {
+      const row = redditoTable.insertRow();
+      const cellDesc = row.insertCell(0);
+      cellDesc.textContent = item.description;
 
-    row.appendChild(cellDescription);
-    row.appendChild(cellValue);
+      // ✅ Aggiunge il pulsante "X" celeste per eliminare voci (tranne stipendio)
+      if (item.description !== "Stipendio") {
+          const removeBtn = document.createElement("button");
+          removeBtn.classList.add("remove-btn-celeste");
+          removeBtn.textContent = "X";
+          removeBtn.onclick = () => {
+              row.remove();
+              calculateTotals();
+          };
+          cellDesc.appendChild(removeBtn);
+      }
+
+      const cellValue = row.insertCell(1);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.value = item.value;
+      input.oninput = calculateTotals;
+      input.id = item.description.toLowerCase().replace(" ", "_");
+      cellValue.appendChild(input);
   });
 
-  // Ripopola attivi
-  const attiviTable = document.getElementById("attiviTable");
-  while (attiviTable.rows.length > 1) {
-    attiviTable.deleteRow(1);
-  }
-  data.attiviData.forEach((item) => {
-    addAttivo();
-    const row = attiviTable.rows[attiviTable.rows.length - 1];
-    row.cells[0].querySelector("select").value = item.tipo;
-    row.cells[1].querySelector("input").value = item.descrizione;
-    row.cells[2].querySelector("input").value = item.valore;
+  // 🟢 Caricamento TABELLA SPESE
+  const speseTable = document.querySelector("#speseTable tbody");
+  speseTable.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
+  Object.keys(data.speseData).forEach(id => {
+      const row = speseTable.insertRow();
+      const cellDesc = row.insertCell(0);
+      cellDesc.textContent = id;
+      const cellValue = row.insertCell(1);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.value = data.speseData[id];
+      input.oninput = calculateTotals;
+      cellValue.appendChild(input);
   });
 
-// Ripopola investimenti
-const investmentTable = document.querySelector('.investment-table tbody');
-while (investmentTable.rows.length > 0) {
-  investmentTable.deleteRow(0); // Pulisce tutte le righe esistenti
-}
-data.investmentsData.forEach((item) => {
-  const newRow = document.createElement('tr');
+  // 🟢 Caricamento TABELLA PASSIVI
+  const passiviTable = document.querySelector("#passiviTable tbody");
+  passiviTable.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
+  data.passiviData.forEach(item => {
+      const row = passiviTable.insertRow();
+      const cellDesc = row.insertCell(0);
+      cellDesc.textContent = item.description;
+      const cellValue = row.insertCell(1);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.value = item.value;
+      input.oninput = calculateRisparmi;
+      cellValue.appendChild(input);
+  });
 
-  // Crea le celle con i dati
-  newRow.innerHTML = `
-    <td><input type="text" placeholder="Descrizione" value="${item.description}"></td>
-    <td><input type="number" placeholder="0" value="${item.cost}"></td>
-    <td><input type="number" placeholder="0" value="${item.expectedReturn}"></td>
-    <td><input type="date" value="${item.expectedDate}"></td>
-    <td>
-      <button class="remove-btn" onclick="removeInvestment(this)">X</button>
-    </td>
-  `;
+  // 🟢 Caricamento TABELLA ATTIVI
+  const attiviTable = document.querySelector("#attiviTable tbody");
+  attiviTable.querySelectorAll("tr:not(:first-child)").forEach(row => row.remove());
+  data.attiviData.forEach(item => {
+      const row = attiviTable.insertRow();
+      const cellType = row.insertCell(0);
+      const select = document.createElement("select");
+      select.innerHTML = `
+          <option value="Azioni/Fondi/CD">Azioni/Fondi/CD</option>
+          <option value="Immobili/Imprese">Immobili/Imprese</option>
+      `;
+      select.value = item.tipo;
+      cellType.appendChild(select);
+      row.insertCell(1).textContent = item.descrizione;
+      const cellValue = row.insertCell(2);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.value = item.valore;
+      input.oninput = calculateRisparmi;
+      cellValue.appendChild(input);
+  });
 
-  investmentTable.appendChild(newRow);
-});
+  // 🟢 Caricamento TABELLA INVESTIMENTI
+  const investmentTable = document.querySelector(".investment-table tbody");
+  investmentTable.querySelectorAll("tr").forEach(row => row.remove());
+  data.investmentsData.forEach(item => {
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+          <td><input type="text" value="${item.description}"></td>
+          <td><input type="number" value="${item.cost}"></td>
+          <td><input type="number" value="${item.expectedReturn}"></td>
+          <td><input type="date" value="${item.expectedDate}"></td>
+          <td><button class="remove-btn" onclick="removeInvestment(this)">X</button></td>
+      `;
+      investmentTable.appendChild(newRow);
+  });
+
+  console.log("✅ Dati caricati con successo!");
+  alert("✅ Dati caricati con successo!");
 
   calculateTotals();
   calculateRisparmi();
   calculateInvestmentTotals();
   calculateAnnualReturns();
-  alert("Dati caricati con successo!");
+  generateInvestmentCharts();
+  generateIncomeExpenseChart();
 }
 
 window.onload = function () {
@@ -565,22 +838,21 @@ window.onload = function () {
   calculateRisparmi();
   calculateInvestmentTotals();
   calculateAnnualReturns();
+  generateInvestmentCharts();
+  generateIncomeExpenseChart();
 };
 
 function removeInvestment(button) {
-  const row = button.parentElement.parentElement; // Trova la riga del pulsante
-  row.remove(); // Rimuove la riga dalla tabella
-  calculateInvestmentTotals(); // Aggiorna i totali dopo la cancellazione
+  const row = button.parentElement.parentElement; 
+  row.remove(); 
+  calculateInvestmentTotals();
 }
 
 function addInvestment() {
-  // Seleziona la tabella degli investimenti
   const investmentTable = document.querySelector('.investment-table tbody');
 
-  // Crea una nuova riga
   const newRow = document.createElement('tr');
 
-  // Aggiungi le celle per ogni colonna della tabella
   newRow.innerHTML = `
       <td><input type="text" placeholder="Descrizione"></td>
       <td><input type="number" placeholder="0"></td>
@@ -591,7 +863,6 @@ function addInvestment() {
       </td>
   `;
 
-  // Aggiungi la nuova riga alla tabella
   investmentTable.appendChild(newRow);
 }
 
@@ -599,20 +870,17 @@ function calculateInvestmentTotals() {
   let totaleInvestito = 0;
   let ricavoAttesoTotale = 0;
 
-  // Scansiona le righe della tabella investimenti
   document.querySelectorAll(".investment-table tbody tr").forEach((row) => {
     const cost = parseFloat(row.cells[1].querySelector("input").value) || 0;
     const expectedReturn =
       parseFloat(row.cells[2].querySelector("input").value) || 0;
 
-    totaleInvestito += cost; // Somma i costi degli investimenti
-    ricavoAttesoTotale += expectedReturn; // Somma i ricavi attesi
+    totaleInvestito += cost; 
+    ricavoAttesoTotale += expectedReturn; 
   });
 
-  // Calcola il prelievo atteso (totale investito + ricavo atteso)
   const prelievoAtteso = totaleInvestito + ricavoAttesoTotale;
 
-  // Aggiorna il DOM con i valori calcolati
   document.getElementById("totaleInvestito").innerText =
     totaleInvestito.toLocaleString("it-IT", { minimumFractionDigits: 2 });
   document.getElementById("ricavoAttesoTotale").innerText =
@@ -620,18 +888,16 @@ function calculateInvestmentTotals() {
   document.getElementById("prelievoAtteso").innerText =
     prelievoAtteso.toLocaleString("it-IT", { minimumFractionDigits: 2 });
 
-  // Aggiorna anche i ricavi annuali
   calculateAnnualReturns();
 }
 
 function toggleTheme() {
-  const htmlElement = document.documentElement; // Riferimento all'elemento <html>
+  const htmlElement = document.documentElement;
   const currentTheme = htmlElement.getAttribute('data-bs-theme');
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
   htmlElement.setAttribute('data-bs-theme', newTheme);
 
-  // Mostra un messaggio o aggiorna lo stato visivo, se necessario
   console.log(`Tema cambiato in: ${newTheme}`);
 }
 

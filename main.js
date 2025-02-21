@@ -255,7 +255,7 @@ function generateIncomeExpenseChart() {
               y: {
                   beginAtZero: true,
                   max: maxY,
-                  title: { display: true, text: "Euro (€)" },
+                  title: { display: true },
               },
           },
       },

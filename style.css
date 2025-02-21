@@ -2,7 +2,7 @@
   --color-primary: #2c3e50; 
   --color-secondary: #18bc9c; 
   --color-accent: #18bc9c;
-  --color-light: #ecf0f1; 
+  --color-light: #eeecf1; 
   --color-dark: #34495e; 
   --color-lighter-gray: #eaeaea; 
   --color-hover-gray: rgb(83, 83, 83); 
@@ -28,6 +28,20 @@ body {
 }
 
 .remove-btn {
+  background: none; 
+  border: none;
+  color: var(--color-secondary); 
+  font-size: 1.2rem; 
+  cursor: pointer;
+  margin: 0; 
+  padding: 0; 
+  position: absolute; 
+  top: 50%; 
+  right: 10px; 
+  transform: translateY(-50%); 
+}
+
+.remove-btn-celeste {
   background: none; 
   border: none;
   color: var(--color-secondary); 
